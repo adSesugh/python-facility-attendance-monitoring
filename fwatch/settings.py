@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,8 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
     'rest_framework',
-    'rest_framework_swagger',
     'rest_framework.authtoken',
+    'rest_framework_simplejwt',
     'drf_spectacular',
     'drf_spectacular_sidecar',
     'core',
@@ -112,7 +116,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = os.environ.get("TIME_ZONE")
 
 USE_I18N = True
 
@@ -132,8 +136,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
+        #'rest_framework.authentication.TokenAuthentication',
+        #'rest_framework.authentication.BasicAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated'
@@ -146,8 +151,21 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'Facility Watch API documentation',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
+    'SCHEMA_PATH_PREFIX': '/api/v1',
+    'CONTACT': {
+        'name': 'Sesugh Agbadu',
+        'email': 'd.sesugh@live.com',
+        'url': 'https://github.com/adSesugh'
+    },
+    'LICENSE': {
+        'name': 'Keenness Solutions'
+    },
     'SWAGGER_UI_DIST': 'SIDECAR',  # shorthand to use the sidecar instead
     'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
     'REDOC_DIST': 'SIDECAR',
     # OTHER SETTINGS
+}
+
+SIMPLE_JWT = {
+  "TOKEN_OBTAIN_SERIALIZER": "api.serializers.FWatchTokenObtainPairSerializer",
 }

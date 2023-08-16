@@ -5,6 +5,7 @@ from rest_framework import generics, viewsets
 from django.contrib.auth import authenticate
 from rest_framework.views import APIView
 
+
 from core.serializers import LaboratorySerializer, UserSerializer, Laboratory
 
 @api_view(['GET'])
@@ -18,6 +19,16 @@ def home(request):
 class LaboratoryViewSet(viewsets.ModelViewSet):
     queryset = Laboratory.objects.all()
     serializer_class = LaboratorySerializer
+    
+    def create(self, request, *args, **kwargs):
+        laboratory = Laboratory(
+            name = request.data.get('name'),
+            code = request.data.get('code'),
+            created_by = request.user
+        )
+        
+        laboratory.save()
+        return laboratory
     
 class UserCreate(generics.CreateAPIView):
     authentication_classes = ()

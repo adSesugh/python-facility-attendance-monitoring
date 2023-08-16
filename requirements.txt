@@ -4,3 +4,6 @@ djangorestframework
 django-cors-headers
 python-dotenv
 django-filter
+drf-spectacular
+drf-spectacular-sidecar
+djangorestframework-simplejwt
